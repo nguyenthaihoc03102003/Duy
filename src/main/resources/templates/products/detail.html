@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Detail</title>
+    <style>
+        body {
+             font-family: Arial, sans-serif;
+             background-color: #f2f2f2;
+             margin: 20px;
+         }
+         .product-details {
+             max-width: 600px;
+             margin: 0 auto;
+             background-color: #fff;
+             padding: 20px;
+             border-radius: 8px;
+             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+         }
+         .product-details p {
+             margin: 10px 0;
+             border-bottom: 1px solid #ddd; /* Đường kẻ ngang dưới mỗi dòng */
+             padding-bottom: 5px; /* Khoảng cách giữa dòng và đường kẻ */
+         }
+         .product-details strong {
+             margin-right: 10px;
+             font-weight: bold;
+         }
+         .product-details span {
+             color: #666;
+         }
+         .product-image {
+             max-width: 300px;
+             max-height: 300px;
+         }
+    </style>
+
+</head>
+<body>
+<h2>Product Detail</h2>
+<section layout:fragment="content" class="container mt-5">
+    <div>
+        <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${product.name}"></span></p>
+        <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
+        <p><strong>Description:</strong> <span th:text="${product.description}"></span></p>
+        <p><strong>Category:</strong> <span th:text="${product.category.name}"></span></p>
+        <img class="product-image" th:src="${product.imageUrl}" alt="Product Image">
+        <td>
+            <!-- Nút thêm vào giỏ hàng, hiển thị cho tất cả người dùng đã xác thực -->
+            <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+                <input type="number" name="quantity" min="1" value="1"
+                       class="form-control d-inline-block" style="width: 70px;">
+                <input type="hidden" th:value="${product.id}" name="productId"/>
+                <button type="submit" class="btn btn-warning btn-sm">Thêm Vào
+                    Giỏ</button>
+            </form>
+        </td>
+    </div>
+    <div>
+        <a th:href="@{/products}" class="btn btn-info mb-3">Go Back</a>
+    </div>
+</section>
+</body>
+</html>
